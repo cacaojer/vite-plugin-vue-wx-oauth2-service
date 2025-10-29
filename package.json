@@ -1,5 +1,5 @@
 {
-  "name": "vite-plugin-vue-wx-oauth2-authorize",
+  "name": "vite-plugin-vue-wx-oauth2-service",
   "rersion": "1.0.0",
   "type": "module",
   "author": "cacaojer",

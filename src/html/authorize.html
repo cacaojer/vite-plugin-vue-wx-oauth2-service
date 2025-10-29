@@ -1,34 +1,25 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="UTF-8" />
     <title>Wx Auth</title>
+    <meta
+      name="viewport"
+      content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover"
+    />
   </head>
   <body>
-    <code
-      id="res"
-      style="
-        height: 62vh;
-        width: 62vw;
-        display: flex;
-        justify-content: start;
-        align-items: start;
-        margin: auto;
-        padding: 15px;
-        border-radius: 10px;
-        transform: translateY(19%);
-        background: #000;
-        color: white;
-        font-weight: bold;
-      "
-    ></code>
+    <div style="padding: 15px; line-height: 2">
+      <code id="res"></code>
+    </div>
   </body>
   <script>
     const innerText = (text) => {
-      const res = document.getElementById("res");
-      res.innerText += `${text}\n`;
-    };
-    (({ origin, pathname, search, hash }) => {
-      const params = new URLSearchParams(search);
+      const res = document.getElementById("res")
+      res.innerText += `${text}\n`
+    }
+    ;(({ origin, pathname, search, hash }) => {
+      const params = new URLSearchParams(search)
       const paramsNames = [
         // appid	必须	企业的CorpID
         "appid",
@@ -49,27 +40,26 @@
 
         // state		重定向后会带上state参数，企业可以填写a-zA-Z0-9的参数值，长度不可超过128个字节
         // "state",
-      ];
+      ]
 
-      let err = 0;
-      innerText(`${pathname}:`);
+      let err = 0
       for (const name of paramsNames) {
-        const p = params.get(name);
+        const p = params.get(name)
         if (!p || p === "null" || p === "undefined") {
-          innerText(`${name} is null`);
-          err++;
+          innerText(`${name} is null`)
+          err++
         }
       }
 
       // #wechat_redirect	必须	终端使用此参数判断是否需要带上身份信息
       if (!hash || hash !== "#wechat_redirect") {
-        innerText(`hash: '${hash}' != '#wechat_redirect'`);
-        err++;
+        innerText(`hash: '${hash}' != '#wechat_redirect'`)
+        err++
       }
 
       if (params.get("response_type") !== "code") {
-        innerText(`response_type != 'code'`);
-        err++;
+        innerText(`response_type != 'code'`)
+        err++
       }
 
       // snsapi_base：静默授权，可获取成员的基础信息（UserId）；
@@ -80,25 +70,25 @@
           params.get("scope"),
         )
       ) {
-        innerText(`scope != 'snsapi_privateinfo || snsapi_base'`);
-        err++;
+        innerText(`scope != 'snsapi_privateinfo || snsapi_base'`)
+        err++
       }
 
-      const redirect_uri = params.get("redirect_uri");
-      innerText(`redirect_uri: ${redirect_uri}`);
+      const redirect_uri = params.get("redirect_uri")
+      innerText(`redirect_uri: ${redirect_uri}`)
       if (err === 0) {
         try {
-          const url = new URL(redirect_uri);
-          const searchParams = url.searchParams;
-          searchParams.set("code", "C-" + Date.now());
+          const url = new URL(redirect_uri)
+          const searchParams = url.searchParams
+          searchParams.set("code", "C-" + Date.now())
           if (params.get("state")) {
-            searchParams.set("state", params.get("state"));
+            searchParams.set("state", params.get("state"))
           }
-          window.location.href = url.toString();
+          window.location.href = url.toString()
         } catch (e) {
-          innerText(e.toString());
+          innerText(e.toString())
         }
       }
-    })(new URL(window.location.href));
+    })(new URL(window.location.href))
   </script>
 </html>
