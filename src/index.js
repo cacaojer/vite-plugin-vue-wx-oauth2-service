@@ -12,6 +12,8 @@ const pemCert = join(currPath, "./cert/cert.pem")
 const imgFavicon = join(currPath, "./img/favicon.png")
 const html404 = join(currPath, "./html/404.html")
 const htmlAuthorize = join(currPath, "./html/authorize.html")
+let port = 20200
+let alias = "QC2509"
 
 const doGet = async (url, response) => {
   const pathname = url.split("?")[0]
@@ -29,7 +31,7 @@ const doGet = async (url, response) => {
       case "/qy/getUser":
       case "/qy/weixin/getUser":
         response.setHeader("Content-Type", "application/json")
-        response.write(JSON.stringify(getUser(params.get("alias") ?? "QC666")))
+        response.write(JSON.stringify(getUser(params.get("alias") || alias)))
         break
       default:
         response.statusCode = 404
@@ -61,7 +63,7 @@ const getUser = (alias) => {
   }
 }
 
-const createHttpServer = (port) => {
+const createHttpServer = () => {
   const options = {
     key: readFileSync(pemKey),
     cert: readFileSync(pemCert),
@@ -121,11 +123,21 @@ const createHttpServer = (port) => {
   })
 }
 
-async function plugin({ port } = { port: 20200 }) {
+// params option {
+// port, alias
+// }
+const plugin = async (option) => {
+  if (option.port) {
+    port = port
+  }
+  if (option.alias) {
+    alias = option.alias
+  }
+
   const obj = {
     name: "vite-plugin-vue-wx-oauth2-authorize",
     buildStart: () => {
-      createHttpServer(port)
+      createHttpServer()
     },
     buildEnd: () => {
       console.debug("buildEnd")
