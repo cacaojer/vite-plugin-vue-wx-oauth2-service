@@ -2,23 +2,28 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Wx Auth</title>
+    <title>oauth2-authorize</title>
     <meta
       name="viewport"
-      content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover"
+      content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
   </head>
-  <body>
-    <div style="padding: 15px; line-height: 2">
-      <code id="res"></code>
-    </div>
+  <body style="padding: 16px">
+    <code>
+      <h2>oauth2/authorize</h2>
+      <hr />
+      <ul id="res" style="line-height: 2; padding-inline-start: 16px"></ul>
+    </code>
   </body>
   <script>
     const innerText = (text) => {
       const res = document.getElementById("res")
-      res.innerText += `${text}\n`
+      const li = document.createElement("li")
+      li.textContent = text
+      res.appendChild(li)
     }
-    ;(({ origin, pathname, search, hash }) => {
+
+    function main({ origin, pathname, search, hash }) {
       const params = new URLSearchParams(search)
       const paramsNames = [
         // appid	必须	企业的CorpID
@@ -89,6 +94,7 @@
           innerText(e.toString())
         }
       }
-    })(new URL(window.location.href))
+    }
+    main(new URL(window.location.href))
   </script>
 </html>

@@ -63,7 +63,14 @@ const getUser = (alias) => {
   }
 }
 
-const createHttpServer = () => {
+const createHttpServer = (params) => {
+  if (params.port) {
+    port = params.port
+  }
+  if (params.alias) {
+    alias = params.alias
+  }
+
   const options = {
     key: readFileSync(pemKey),
     cert: readFileSync(pemCert),
@@ -123,21 +130,12 @@ const createHttpServer = () => {
   })
 }
 
-// params option {
-// port, alias
-// }
+// params option { port, alias }
 const plugin = async (option) => {
-  if (option.port) {
-    port = port
-  }
-  if (option.alias) {
-    alias = option.alias
-  }
-
   const obj = {
     name: "vite-plugin-vue-wx-oauth2-authorize",
     buildStart: () => {
-      createHttpServer()
+      createHttpServer(option)
     },
     buildEnd: () => {
       console.debug("buildEnd")
@@ -149,4 +147,4 @@ const plugin = async (option) => {
   return obj
 }
 
-export default plugin
+export { createHttpServer, plugin as default }
