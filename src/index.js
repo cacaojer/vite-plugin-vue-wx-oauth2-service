@@ -21,21 +21,21 @@ const doGet = async (url, response) => {
   return new Promise((res) => {
     switch (pathname) {
       case "/favicon.ico":
-        response.setHeader("Content-Type", "image/x-icon")
+        response.setHeader("content-type", "image/x-icon")
         response.write(readFileSync(imgFavicon))
         break
       case "/connect/oauth2/authorize":
-        response.setHeader("Content-Type", "text/html")
+        response.setHeader("content-type", "text/html")
         response.write(readFileSync(htmlAuthorize))
         break
       case "/qy/getUser":
       case "/qy/weixin/getUser":
-        response.setHeader("Content-Type", "application/json")
+        response.setHeader("content-type", "application/json")
         response.write(JSON.stringify(getUser(params.get("alias") || alias)))
         break
       default:
         response.statusCode = 404
-        response.setHeader("Content-Type", "text/html")
+        response.setHeader("content-type", "text/html")
         response.write(readFileSync(html404))
     }
     res()
@@ -93,12 +93,14 @@ const createHttpServer = (params) => {
         })
         response.statusCode = 200
         response.setHeader("Access-Control-Allow-Origin", "*")
+        response.setHeader("content-type", "application/json")
 
         switch (method) {
           case "OPTIONS":
             for (const [key, value] of Object.entries({
               "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
-              "Access-Control-Allow-Headers": "carerid, orgid",
+              "Access-Control-Allow-Headers":
+                "carerid, orgid, access_token, content-type",
             })) {
               response.setHeader(key, value)
             }
@@ -108,9 +110,11 @@ const createHttpServer = (params) => {
             break
           case "POST":
           case "PUT":
+            response.write(JSON.stringify({ code: 0, msg: "success" }))
+            break
           default:
             response.statusCode = 404
-            response.setHeader("Content-Type", "text/html")
+            response.setHeader("content-type", "text/html")
             response.write(readFileSync(html404))
         }
         response.end()
