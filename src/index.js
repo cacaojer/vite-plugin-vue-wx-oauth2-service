@@ -138,6 +138,7 @@ const createHttpServer = (params) => {
 const plugin = async (option) => {
   const obj = {
     name: "vite-plugin-vue-wx-oauth2-authorize",
+    apply: "serve",
     buildStart: () => {
       createHttpServer(option)
     },
