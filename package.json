@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-vue-wx-oauth2-service",
-  "rersion": "1.0.0",
+  "rersion": "1.0.1",
   "type": "module",
   "author": "cacaojer",
   "main": "./src/index.js",
