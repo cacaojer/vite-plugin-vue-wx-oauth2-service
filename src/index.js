@@ -11,6 +11,7 @@ const currPath = dirname(fileURLToPath(import.meta.url));
 const imgFavicon = join(currPath, "./img/favicon.png");
 const html404 = join(currPath, "./html/404.html");
 const htmlAuthorize = join(currPath, "./html/authorize.html");
+let wxuserAlias;
 
 const doGet = async (url, response) => {
   const pathname = url.split("?")[0];
@@ -28,7 +29,9 @@ const doGet = async (url, response) => {
       case "/qy/getUser":
       case "/qy/weixin/getUser":
         response.setHeader("content-type", "application/json");
-        response.write(JSON.stringify(getUser(params.get("alias"))));
+        response.write(
+          JSON.stringify(getUser(params.get("alias")) || wxuserAlias),
+        );
         break;
       default:
         response.statusCode = 404;
@@ -66,7 +69,7 @@ const createHttpServer = (params) => {
   if (!alias) {
     throw new Error("params.alias is null");
   }
-
+  wxuserAlias = alias;
   const options = {};
   if (cert?.key && cert?.cert) {
     options.key = readFileSync(params.cert.key);
