@@ -1,0 +1,14 @@
+import { createHttpServer } from "../src/index.js";
+
+<<<<<<< HEAD
+const config = {
+  port: 20200,
+  alias: "QC2509",
+}
+createHttpServer(config)
+=======
+createHttpServer({
+  port: 20200,
+  alias: "QC666",
+});
+>>>>>>> 5e6fbd5174be1e3afc1350eb042c39e7867ff01f

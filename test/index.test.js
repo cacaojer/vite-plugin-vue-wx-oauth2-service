@@ -1,7 +1,7 @@
-import { createHttpServer } from "../src/index.js"
+import { createHttpServer } from "../src/index.js";
 
 const config = {
   port: 20200,
   alias: "QC2509",
-}
-createHttpServer(config)
+};
+createHttpServer(config);

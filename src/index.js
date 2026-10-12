@@ -1,4 +1,5 @@
 import https from "node:https";
+import http from "node:http";
 
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -72,7 +73,9 @@ const createHttpServer = (params) => {
     options.cert = readFileSync(params.cert.cert);
   }
 
-  const server = https.createServer(options, (request, response) => {
+  const createServer = options.key ? https.createServer : http.createServer;
+
+  const server = createServer(options, (request, response) => {
     const { method, url } = request;
     // const { host } = headers
     request
