@@ -30,7 +30,7 @@ const doGet = async (url, response) => {
       case "/qy/weixin/getUser":
         response.setHeader("content-type", "application/json");
         response.write(
-          JSON.stringify(getUser(params.get("alias")) || wxuserAlias),
+          JSON.stringify(getUser(params.get("alias") || wxuserAlias)),
         );
         break;
       default:
